@@ -1,0 +1,287 @@
+#include <stdio.h>
+#include <windows.h>
+
+#define _CRT_SECURE_NO_WARINGS
+#define TRUE 1
+#define coke 800   //음료 가격//
+#define sprite 800
+#define fanta 700
+#define coffee 700
+#define water 500
+
+int money; //넣은 돈//
+int mmoney; //자판기에서 넣을 돈을 money에 합산 하기 위한 변수//
+int total; //총 합//
+int key; //입력한 버튼//
+int number; //음료수의 수량을 고르기 위한 변수//
+int nameozi; //투입된 돈에서 돈의 총합을 뺀 나머지//
+int stockcola = 0; //매출 카운트를 위한 변수//
+int stocksprite = 0; 
+int stockfanta = 0; 
+int stockcoffee = 0; 
+int stockwater = 0; 
+int stocksum = 0;  //전체 매출 계산 변수//
+int Cola = 5; //재고 카운트 변수//
+int Sprite = 5;
+int Fanta = 5;
+int Coffee = 5;
+int Water = 5;
+int Exit;  //(y / n) 여부를 묻기 위한 변수//
+
+int Moneyinsert() {  
+	printf("기계에 넣을실 돈을 입력 하시오 :");
+	scanf("%d", &money);
+	printf("%d 원을 넣으셨습니다.\n", money);
+	return 0;
+};
+
+int MainMenu() {
+	system("color E");
+	while (TRUE) {
+
+		puts("┌─────────────────────────────────────────────────────────┐");
+		puts("│    ┌───────────────────────────────────────────────┐    │");
+		puts("│    │ ┌─┓       ┌─┓       ┌─┓       ┌─┓       ┌─┓   │    │");
+		puts("│    │ │ │       │ │       │ │       │ │       │ │   │    │");
+		puts("│    │ └─┘       └─┘       └─┘       └─┘       └─┘   │    │");
+		puts("│    └───────────────────────────────────────────────┘    │");
+		printf("│  1.Coke(%d) 2.Sprite(%d) 3.Fanta(%d) 4.Coffee(%d) 5.Water(%d)│\n", Cola, Sprite, Fanta, Coffee, Water);
+		printf("│    <%d원>   <%d원>   <%d원>   <%d원>   <%d원>      │\n", coke, sprite, fanta, coffee, water);
+		puts("│─────────────────────────────────────────────────────────│");
+		printf("    ◆◇ 현재까지 투입된 총 금액: %d 원 입니다. ◇◆      \n", money);
+		puts("│─────────────────────────────────────────────────────────│");
+		puts("│ ※※※※※※※※※※※※<key안내>※※※※※※※※※※※ │");
+		puts("│─────────────────────────────────────────────────────────│");
+		puts("│ ☞ <1번>  : ★[Coke]★ 뽑기                             │");
+		puts("│ ☞ <2번>  : ★[Sprite]★ 뽑기                           │");
+		puts("│ ☞ <3번>  : ★[Fanta]★ 뽑기                            │");
+		puts("│ ☞ <4번>  : ★[Coffee]★ 뽑기                           │");
+		puts("│ ☞ <5번>  : ★[Water]★ 뽑기                            │");
+		puts("│─────────────────────────────────────────────────────────│");
+		puts("│ ☞ <6번>  : 동전 반환                                   │");
+		puts("│ ☞ <7번>  : 자판기 판매 매출 보기                       │");
+		puts("│ ☞ <8번>  : 자판기 판매 매출 초기화                     │");
+		puts("│ ☞ <9번>  : 돈 넣기                                     │");
+		puts("│ ☞ <10번> : 재고 재입고                                 │");
+		puts("│─────────────────────────────────────────────────────────│");
+		puts("│ ☞ <11번> : 프로그램 종료                               │");
+		puts("└─────────────────────────────────────────────────────────┘");
+
+		printf("원하시는 키를 입력 하세요 ☞");
+		scanf("%d", &key);
+		if ((key < 0) || (key > 11)) {
+			printf("잘못 입력 하셨습니다");
+			continue;
+		}
+
+		
+
+		switch (key) {
+		case 1:
+			printf("품목갯수>>");
+			scanf("%d", &number);
+
+			if ((coke * number) > money) {
+				printf("돈이 부족합니다.\n");
+				continue;
+			}
+			if ((Cola < 1) || (number > 5)) {
+				printf("콜라의 재고가 없습니다.\n");
+				continue;
+			}
+			else {
+				total = coke * number;
+				nameozi = money - total;
+				money = nameozi;
+				printf("콜라를 뽑았습니다!\n 잔액은%d 원.\n", nameozi);
+				stockcola += number * coke;
+				stocksum += number * coke;
+				Cola -= number;
+				continue;
+			}
+			break;
+
+		case 2:
+			printf("품목갯수>>");
+			scanf("%d", &number);
+
+			if ((sprite * number) > money) {
+				printf("돈이 부족합니다.\n");
+				continue;
+			}
+			else if ((Sprite < 1) || (number > 5)) {
+				printf("스프라이트의 재고가 없습니다.\n");
+				continue;
+			}
+			else {
+				total = sprite * number;
+				nameozi = money - total;
+				money = nameozi;
+				printf("스프라이트를 뽑았습니다!\n 잔액은% d 원.\n", nameozi);
+				stocksprite += number * sprite;
+				stocksum += number * sprite;
+				Sprite -= number;
+				continue;
+			}
+			break;
+
+		case 3:
+			printf("품목갯수>>");
+			scanf("%d", &number);
+
+			if ((fanta * number) > money) {
+				printf("돈이 부족합니다.\n");
+				continue;
+			}
+			else if ((Fanta < 1) || (number > 5)) {
+				printf("환타의 재고가 없습니다.\n");
+				continue;
+			}
+			else {
+				total = fanta * number;
+				nameozi = money - total;
+				money = nameozi;
+				printf("환타를 뽑았습니다!\n 잔액은% d 원.\n", nameozi);
+				stockfanta += number * fanta;
+				stocksum += number * fanta;
+				Fanta -= number;
+				continue;
+			}
+			break;
+
+		case 4:
+			printf("품목갯수>>");
+			scanf("%d", &number);
+
+			if ((coffee * number) > money) {
+				printf("돈이 부족합니다.\n");
+				continue;
+			}
+			else if ((Coffee < 1) || (number > 5)) {
+				printf("커피의 재고가 없습니다.\n");
+				continue;
+			}
+			else {
+				total = coffee * number;
+				nameozi = money - total;
+				money = nameozi;
+				printf("커피를 뽑았습니다!\n 잔액은% d 원.\n", nameozi);
+				stockcoffee += number * coffee;
+				stocksum += number * coffee;
+				Coffee -= number;
+				continue;
+			}
+			break;
+
+		case 5:
+			printf("품목갯수>>");
+			scanf("%d", &number);
+
+			if ((water * number) > money) {
+				printf("돈이 부족합니다.\n");
+				continue;
+			}
+			else if ((Water < 1) || (number > 5)) {
+				printf("물 의 재고가 없습니다.\n");
+				continue;
+			}
+			else {
+				total = water * number;
+				nameozi = money - total;
+				money = nameozi;
+				printf("물을 뽑았습니다!\n 잔액은% d 원.\n", nameozi);
+				stockwater += number * water;
+				stocksum += number * water;
+				Water -= number;
+				continue;
+			}
+			break;
+
+		case 6:
+				printf("잔액 %d 원이 반환 되었습니다.\n", money);
+				money -= money;
+				continue;
+
+			break;
+
+		case 7:
+			printf("   ★현재 음료매출 현황★   \n");
+			printf("┌───────────────────────┐\n");
+			printf("│   1. 콜라      (%d원)  <<\n", stockcola);
+			printf("│   2. 스프라이트(%d원)  <<\n", stocksprite);
+			printf("│   3. 환 타     (%d원)  <<\n", stockfanta);
+			printf("│   4. 커 피     (%d원)  <<\n", stockcoffee);
+			printf("│   5. 물        (%d원)  <<\n", stockwater);
+			printf("│    전체 매출   (%d원)  <<\n", stocksum);
+			printf("└───────────────────────┘\n");
+			continue;
+			break;
+
+		case 8:
+			stockcola -= stockcola;
+			stocksprite -= stocksprite;
+			stockfanta -= stockfanta;
+			stockcoffee -= stockcoffee;
+			stockwater -= stockwater;
+			stocksum -= stocksum;
+			printf("    ★매출 초기화 완료★    \n");
+			printf("┌───────────────────────┐\n");
+			printf("│   1. 콜라      (%d원)  <<\n", stockcola);
+			printf("│   2. 스프라이트(%d원)  <<\n", stocksprite);
+			printf("│   3. 환 타     (%d원)  <<\n", stockfanta);
+			printf("│   4. 커 피     (%d원)  <<\n", stockcoffee);
+			printf("│   5. 물        (%d원)  <<\n", stockwater);
+			printf("│  전체 매출     (%d개)  <<\n", stocksum);
+			printf("└───────────────────────┘\n");
+			continue;
+			break;
+
+		case 9:
+			printf("기계에 넣을실 돈을 입력 하시오 :");
+			scanf("%d", &mmoney);
+			printf("%d 원을 넣으셨습니다.\n", mmoney);
+			money += mmoney;
+			return MainMenu();
+			continue;
+			break;
+			
+		case 10:
+			Cola = 5;
+			Sprite = 5;
+			Fanta = 5;
+			Coffee = 5;
+			Water = 5;
+			printf("음료들의 재고를 재입고 하였습니다.\n");
+			continue;
+			break;
+				
+		case 11:
+			printf("정말로 초기화 하시겠 습니까? (1 = Yes / 2 = No) ☞ ");
+			scanf("%d", &Exit);
+
+			if ((Exit < 1) || (Exit > 2)) {
+				printf("잘못 입력 하셨습니다.\n");
+				continue;
+			}
+			else if(Exit == 1) {
+				printf("자판기 종료합니다.\n");
+				break;
+			}
+			else if(Exit == 2) {
+				printf("자판기 계속 운영합니다.\n");
+				continue;
+			}
+
+
+		}
+		return 0;
+	}
+};
+
+int main() {
+	Moneyinsert();
+
+	MainMenu();
+
+	return 0;
+}
